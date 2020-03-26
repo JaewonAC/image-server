@@ -196,15 +196,17 @@
         image_canvas.style.visibility = "visible";
     });
 
-    navigator.getUserMedia({
-        //video: true,
-        video: {width: {exact: width}, height: {exact: height}}
-    }, function(stream){
-        player.srcObject = stream;
-        source_mode = 'camera';
-    }, function() {
+    try{
+        navigator.mediaDevices.getUserMedia({
+            //video: true,
+            video: {width: {exact: width}, height: {exact: height}}
+        }, function(stream){
+            player.srcObject = stream;
+            source_mode = 'camera';
+        });
+    } catch(err) {
         source_mode = 'file'
-    });
+    }
 
     let successCapture = function(data){
         image.src = data['image_url'];
