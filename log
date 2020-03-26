@@ -1995,3 +1995,26 @@ jac@jac-lt:~$ cat /proc/driver/nvidia/version
 NVRM version: NVIDIA UNIX x86_64 Kernel Module  440.33.01  Wed Nov 13 00:00:22 UTC 2019
 GCC version:  gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)
 jac@jac-lt:~$
+jac@jac-lt:~$ sudo docker run --gpus all nvidia/cuda nvidia-smi
+Unable to find image 'nvidia/cuda:latest' locally
+latest: Pulling from nvidia/cuda
+7ddbc47eeb70: Pull complete                                                                                    c1bbdc448b72: Pull complete                                                                                    8c3b70e39044: Pull complete                                                                                    45d437916d57: Pull complete                                                                                    d8f1569ddae6: Pull complete                                                                                    85386706b020: Pull complete                                                                                    ee9b457b77d0: Pull complete                                                                                    be4f3343ecd3: Pull complete                                                                                    30b4effda4fd: Pull complete                                                                                    Digest: sha256:31e2a1ca7b0e1f678fb1dd0c985b4223273f7c0f3dbde60053b371e2a1aee2cd
+Status: Downloaded newer image for nvidia/cuda:latest
+Thu Mar 26 17:08:49 2020
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 440.33.01    Driver Version: 440.33.01    CUDA Version: 10.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 105...  On   | 00000000:01:00.0 Off |                  N/A |
+| N/A   45C    P8    N/A /  N/A |      0MiB /  4042MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+jac@jac-lt:~$
