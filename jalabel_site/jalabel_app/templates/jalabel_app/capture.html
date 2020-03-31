@@ -197,12 +197,14 @@
     });
 
     try{
-        navigator.mediaDevices.getUserMedia({
+        navigator.getUserMedia({
             //video: true,
             video: {width: {exact: width}, height: {exact: height}}
         }, function(stream){
             player.srcObject = stream;
             source_mode = 'camera';
+        }, function(error){
+            source_mode = 'file'
         });
     } catch(err) {
         source_mode = 'file'
