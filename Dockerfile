@@ -1,5 +1,5 @@
 # pull official base image
-FROM tensorflow/tensorflow:2.1.0-gpu-py3
+FROM python:3.7.5
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /config
 RUN pip install --upgrade pip

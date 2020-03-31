@@ -1,6 +1,5 @@
 import os
 
-import tensorflow as tf
 from PIL import Image
 import numpy as np
 
@@ -10,14 +9,7 @@ import requests
 
 class FixtureAI:
     def __init__(self):
-        # self.tfserving_url = 'http://localhost:8501/v1/models/model:predict'
-        print('tf.config.list_physical_devices')
-        print(tf.config.list_physical_devices('GPU'))
-        print('tf.test.is_built_with_cuda')
-        print(tf.test.is_built_with_cuda)
-
-        self.model = tf.saved_model.load('./jalabel_app/tf_models/20200220')
-        self.signature = self.model.signatures["serving_default"]
+        self.tfserving_url = 'http://192.168.222.198:8501/v1/models/model:predict'
 
         self.image_height = 1080
         self.image_width = 1920
@@ -57,17 +49,13 @@ class FixtureAI:
             cropped_image_np = np.expand_dims(cropped_image_np, axis=0)
             cropped_image_np = np.expand_dims(cropped_image_np, axis=3)
 
-            # data_json = json.dumps(
-            #     {'signature_name': 'serving_default',
-            #      'instances': cropped_image_np.tolist()})
-            # json_response = requests.post(self.tfserving_url, data=data_json, headers=headers)
-            # cropped_prediction = json.loads(json_response.text)['predictions']
-            # cropped_prediction = np.array(cropped_prediction[0])
-            # cropped_prediction = np.pad(cropped_prediction, ((0, 0), (0, 0), (0, 2)))
-
-            cropped_prediction = self.signature(input_1=tf.convert_to_tensor(cropped_image_np, dtype='float'))
-            cropped_prediction = np.array(cropped_prediction['conv2d_29'], dtype=np.uint8)
-            cropped_prediction = np.pad(cropped_prediction, ((0, 0), (0, 0), (0, 0), (0, 2))).squeeze()
+            data_json = json.dumps(
+                {'signature_name': 'serving_default',
+                 'instances': cropped_image_np.tolist()})
+            json_response = requests.post(self.tfserving_url, data=data_json, headers=headers)
+            cropped_prediction = json.loads(json_response.text)['predictions']
+            cropped_prediction = np.array(cropped_prediction[0])
+            cropped_prediction = np.pad(cropped_prediction, ((0, 0), (0, 0), (0, 2)))
 
             prediction[ys:ye, xs:xe] = cropped_prediction
 
