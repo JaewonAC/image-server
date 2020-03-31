@@ -24,12 +24,14 @@ https://www.tensorflow.org/install/gpu
 
 
 ## How to start ##
- 1. move to parent directory you want to place project
- 2. git clone https://gitlab.cybermed.co.kr/jaewonac/fixtureinspector.git
- 3. cd fixtureinspector
- 4. docker-compose up.
- 5. wait about 5 minute.
- 6. visit http://localhost:8000/dashboard
+ 1. from /home/your_name/ directory.
+ ```
+ git clone https://gitlab.cybermed.co.kr/jaewonac/fixtureinspector.git
+ cd fixtureinspector
+ docker-compose up -d
+ docker run -dit --runtime=nvidia -p 8501:8501 --mount type=bind,source=$(pwd)/jalabel_site/jalabel_app/tf_models,target=/models/model -t tensorflow/serving:latest-gpu
+ ```
+ 2. visit http://localhost:8000/dashboard
 
 ## Future Work ##
 - seperate Docker to development and product
