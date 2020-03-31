@@ -1,4 +1,5 @@
-version: "3.7"
+# version: "3.7"
+version: "2.3"
 services:
   nginx:
     image: nginx:latest
@@ -12,6 +13,7 @@ services:
       - web
   web:
     build: .
+    runtime: nvidia
     container_name: dg01
     command: bash -c "python manage.py makemigrations jalabel_app && python manage.py migrate && gunicorn jalabel_site.wsgi -b 0.0.0.0:8000"
     depends_on:
@@ -20,7 +22,7 @@ services:
       - ./jalabel_site:/jalabel_site
     expose:
       - "8000"
-
+  
   db:
     image: postgres:latest
     container_name: ps01
