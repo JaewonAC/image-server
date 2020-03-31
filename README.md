@@ -29,7 +29,6 @@ https://www.tensorflow.org/install/gpu
  git clone https://gitlab.cybermed.co.kr/jaewonac/fixtureinspector.git
  cd fixtureinspector
  docker-compose up -d
- docker run -dit --runtime=nvidia -p 8501:8501 --mount type=bind,source=$(pwd)/jalabel_site/jalabel_app/tf_models,target=/models/model -t tensorflow/serving:latest-gpu
  ```
  2. visit http://localhost:8000/dashboard
 
