@@ -1,12 +1,11 @@
 # FixtureInspector
 
 ## Requirement ##
-### Linux ###
-Follow instruction in
+### Linux & Windows ###
+ 1. Docker
+ 
+ Follow instruction in
 https://www.tensorflow.org/install/docker
-
-### Windows ###
- - Docker
 
 #### If you want to run server yourself ####
 1. Install python 3.7.5
