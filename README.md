@@ -2,7 +2,7 @@
 
 ## Requirement ##
 ### Linux & Windows ###
- Docker
+ 1. Docker
  
  Follow instruction in
 https://www.tensorflow.org/install/docker
