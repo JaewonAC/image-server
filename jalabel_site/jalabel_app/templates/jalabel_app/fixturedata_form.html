@@ -20,8 +20,8 @@
         {% crispy form %}
     </div>
     <div class="bottom-button-group" id="capture-buttons">
-        <button id="dashboard" class="bottom-button">Dashboard</button>
-        <button id="capture" class="bottom-button">Capture</button>
+        <button id="dashboard" class="bottom-button">Dashboard(Esc)</button>
+        <button id="capture" class="bottom-button">Capture(S, Space)</button>
     </div>
 </div>
 </body>
@@ -94,7 +94,7 @@
         capture_buttons.style.visibility = "visible"
     });
 
-    captureButton.addEventListener('click', () => {
+     let capture = function() {
         clearInterval(clock_id);
 
         if (player.srcObject != null) {
@@ -125,10 +125,29 @@
                 }
             });
         });
-    });
+    };
 
-    dashboardButton.addEventListener('click', function(){
+    let dashboard = function(){
         location.href = window.origin + '/dashboard/';
+    };
+
+    captureButton.addEventListener('click', capture);
+    dashboardButton.addEventListener('click', dashboard);
+    image_canvas.addEventListener('keydown', function(event) {
+        const keyName = event.key;
+        console.log(keyName);
+        switch (keyName) {
+            case 'Escape':
+                dashboard();
+                break;
+            case 's':
+            case 'S':
+            case 'b':
+            case 'B':
+            case ' ':
+                capture();
+                break;
+        }
     });
 </script>
 </html>
