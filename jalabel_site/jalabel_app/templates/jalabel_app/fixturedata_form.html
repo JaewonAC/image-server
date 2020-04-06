@@ -81,7 +81,27 @@
         } catch(err) {
         }
         clock_id = setInterval(currentDateTime, 1);
+
+        let lot_number = getCookie('lot_number')
+        if(lot_number != undefined){
+            $('#id_lot_number').val(lot_number)
+        }
     };
+
+    let getCookie = function(cname){
+        for(cookie of document.cookie.split('; ')){
+            let cs = cookie.split('=')
+            if(cs[0] == cname){
+                return cs[1]
+            }
+        }
+
+        return undefined
+    }
+
+    $("#id_lot_number").change(function(e){
+        document.cookie = 'lot_number=' + $("#id_lot_number").val()
+    });
 
     $("#id_image_data").change(function(e) {
         let reader = new FileReader();
@@ -128,25 +148,28 @@
     };
 
     let dashboard = function(){
-        location.href = window.origin + '/dashboard/';
+        window.location.href = window.origin + '/dashboard/';
+        return false;
     };
 
     captureButton.addEventListener('click', capture);
     dashboardButton.addEventListener('click', dashboard);
-    image_canvas.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function(event) {
         const keyName = event.key;
-        console.log(keyName);
-        switch (keyName) {
-            case 'Escape':
-                dashboard();
-                break;
-            case 's':
-            case 'S':
-            case 'b':
-            case 'B':
-            case ' ':
-                capture();
-                break;
+        if(document.activeElement.id != 'id_lot_number'){
+            console.log(keyName);
+            switch (keyName) {
+                case 'Escape':
+                    setTimeout(dashboard, 10);
+                    break;
+                case 's':
+                case 'S':
+                case 'b':
+                case 'B':
+                case ' ':
+                    capture();
+                    break;
+            }
         }
     });
 </script>
