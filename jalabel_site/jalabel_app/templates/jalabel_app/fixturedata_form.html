@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Capture</title>
+    <link rel="shortcut icon" type="image/png" href='{% static "favicon/favicon.ico" %}'>
+    <link rel="stylesheet" type="text/css" href='{% static "jalabel_app/capture.css" %}'>
+</head>
+<body>
+<div class="container">
+    <div class="image_div">
+        <video id="player" autoplay></video>
+        <canvas id="image_canvas"></canvas>
+    </div>
+    <div class="form-wrapper">
+        {% crispy form %}
+    </div>
+    <div class="bottom-button-group" id="capture-buttons">
+        <button id="dashboard" class="bottom-button">Dashboard</button>
+        <button id="capture" class="bottom-button">Capture</button>
+    </div>
+</div>
+</body>
+<script rel="javascript" type="text/javascript" src='{% static "jalabel_app/js/jquery-3.4.1.min.js" %}'></script>
+<script>
+    const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    const capture_buttons = document.getElementById('capture-buttons');
+    const captureButton = document.getElementById('capture');
+    const dashboardButton = document.getElementById('dashboard');
+
+    const player = document.getElementById('player');
+
+    const width = 1920;
+    const height = 1080;
+
+    const image_canvas = document.getElementById('image_canvas');
+    const image_context = image_canvas.getContext('2d');
+
+    image_canvas.width = width;
+    image_canvas.height = height;
+
+    let image = new Image();
+
+    image.onload = function(){
+        image_context.image = image;
+        image_context.clearRect(0, 0, image_context.width, image_context.height);
+        image_context.drawImage(this, 0, 0);
+        image_canvas.setAttribute('tabindex','0');
+        image_canvas.focus();
+    };
+
+    let clock_id;
+
+    function currentDateTime(){
+        let today = new Date();
+        let time_string = today.getFullYear() + '-' +
+            (today.getMonth()+1).toString().padStart(2, '0') + '-' +
+            today.getDate().toString().padStart(2, '0') + ' ' +
+            today.getHours().toString().padStart(2, '0') + ':' +
+            today.getMinutes().toString().padStart(2, '0') + ':' +
+            today.getSeconds().toString().padStart(2, '0') + '.' +
+            today.getMilliseconds().toString().padStart(3, '0') + '000';
+
+        $('#id_uploaded_date').val(time_string)
+    }
+
+    window.onload = function(){
+        try{
+            navigator.getUserMedia({
+                //video: true,
+                video: {width: {exact: width}, height: {exact: height}}
+            }, function(stream){
+                player.srcObject = stream;
+            }, function(error){
+            });
+        } catch(err) {
+        }
+        clock_id = setInterval(currentDateTime, 1);
+    };
+
+    $("#id_image_data").change(function(e) {
+        let reader = new FileReader();
+        reader.onload = function(){
+            image.src = reader.result
+        };
+        reader.readAsDataURL(e.target.files[0]);
+
+        image_canvas.style.visibility = "visible";
+        capture_buttons.style.visibility = "visible"
+    });
+
+    captureButton.addEventListener('click', () => {
+        clearInterval(clock_id);
+
+        if (player.srcObject != null) {
+            image_context.drawImage(player, 0, 0, image_canvas.width, image_canvas.height);
+        }
+        image_canvas.toBlob(function(blob) {
+            let formData = new FormData(document.getElementById('uploadForm'));
+            formData.set('message', 'unknown');
+            formData.set('image_data', blob, ($('#id_uploaded_date').val() + '_' + $('#id_lot_number').val()+'.png'));
+            $.ajax({
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    // xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                },
+                url: window.location.origin + '/capture/add/',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'post',
+                type: 'post',
+                success: function(data) {
+                    console.log(data);
+                    location.href = window.origin + '/capture/' + data['id'] + '/'
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        });
+    });
+
+    dashboardButton.addEventListener('click', function(){
+        location.href = window.origin + '/dashboard/';
+    });
+</script>
+</html>
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+    <link rel="shortcut icon" type="image/png" href='{% static "favicon/favicon.ico" %}'>
+    <link rel="stylesheet" type="text/css" href='{% static "jalabel_app/capture.css" %}'>
+</head>
+<body>
+<div class="container">
+    <div class="image_div">
+        <video id="player" autoplay></video>
+        <canvas id="image_canvas"></canvas>
+        <canvas id="prediction_canvas"></canvas>
+        <canvas id="poly_canvas"></canvas>
+    </div>
+    <div class="form-wrapper">
+        {% crispy form %}
+    </div>
+    <div class="left-button-group" id ="label-buttons">
+        <button id="show-hide" class="left-button">both</button>
+    </div>
+    <div class="bottom-button-group" id="classify-buttons">
+        <button id="back" class="bottom-button">Delete</button>
+        <button id="perfect" class="bottom-button">Perfect</button>
+        <button id="defect" class="bottom-button">Defect</button>
+        <button id="later" class="bottom-button">Later</button>
+    </div>
+    <canvas id="cursor_canvas"></canvas>
+</div>
+</body>
+<script rel="javascript" type="text/javascript" src='{% static "jalabel_app/js/jquery-3.4.1.min.js" %}'></script>
+<script rel="javascript" type="text/javascript" src='{% static "jalabel_app/capture.js" %}'></script>
+<script>
+    const backButton = document.getElementById('back');
+    const perfectButton = document.getElementById('perfect');
+    const laterButton = document.getElementById('later');
+    const defectButton = document.getElementById('defect');
+
+    const showHideButton = document.getElementById('show-hide');
+
+    const player = document.getElementById('player');
+
+    window.onload = function(){
+        image_context.imageSmoothingEnabled = false;
+        prediction_context.imageSmoothingEnabled = false;
+        cursor_context.imageSmoothingEnabled = false;
+        poly_context.imageSmoothingEnabled = false;
+
+        prediction_canvas.style.pointerEvents = 'none';
+        cursor_canvas.style.pointerEvents = 'none';
+        cursor_canvas.style.position = 'absolute';
+        poly_canvas.style.pointerEvents = 'none';
+
+        let div_message = document.getElementById('div_id_message');
+        let div_image_data = document.getElementById('div_id_image_data');
+        let div_rle_csv = document.getElementById('div_id_rle_csv');
+
+        image.src = $('#div_id_image_data').children()[1].children[0].href;
+        prediction.src = $('#div_id_rle_csv').children()[1].children[0].href;
+
+        div_message.style.display = 'none';
+        div_image_data.style.display = 'none';
+        div_rle_csv.style.display = 'none';
+    };
+
+    showHideButton.addEventListener('click', showHide);
+    backButton.addEventListener('click', function(){
+        console.log('hello');
+        location.href = 'delete/';
+    });
+    perfectButton.addEventListener('click', function(){check('perfect');});
+    defectButton.addEventListener('click', function(){check('defect');});
+    laterButton.addEventListener('click', function(){check('later');});
+</script>
+</html>

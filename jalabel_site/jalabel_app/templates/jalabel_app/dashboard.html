@@ -78,7 +78,7 @@
                 </i>
                 Home
             </a>
-            <a class="mdl-navigation__link" href="/capture">
+            <a class="mdl-navigation__link" href="/capture/add/">
                 <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">
                     camera_alt
                 </i>
@@ -167,15 +167,7 @@
     let data = document.getElementsByClassName('mdl-grid data')[0].children;
     for(let elem of data){
         elem.addEventListener('click', function(){
-
-            $('#id_option').val('open');
-            $('#id_uploaded_date_from').val(this.children[2].innerText);
-            $('#searchForm').submit();
-            // document.getElementById('uploadForm').action = '/capture/';
-            // $('#id_message').val('open');
-            // $('#id_uploaded_date').val();
-            // $('#id_lot_number').val(this.children[3].innerText);
-            // document.getElementById('uploadForm').submit('/capture/');
+            location.href = window.origin + '/capture/' + elem.children[1].innerText + '/';
         });
 
         switch(elem.children[4].innerText){

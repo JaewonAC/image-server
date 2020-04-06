@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete</title>
+    <link rel="shortcut icon" type="image/png" href='{% static "favicon/favicon.ico" %}'>
+</head>
+<body>
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <input type="submit" value="Confirm">
+</form>
+</body>
+<script>
+    const csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    window.onload = function(){
+        location.href = window.origin + '/capture/add/'
+    }
+</script>
+</html>
