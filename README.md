@@ -7,6 +7,8 @@
  Follow instruction in
 https://www.tensorflow.org/install/docker
 
+In Windows, comment docker-compose.yml file's "runtime: nvidia" line. Since docker doesn't support GPU in windows.
+
 #### If you want to run server yourself ####
 1. Install python 3.7.5
 2. In 'config' directory, run
