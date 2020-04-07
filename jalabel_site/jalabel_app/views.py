@@ -111,12 +111,19 @@ class Dashboard(FormView):
             print('it`s ajax and valid')
             return response
         else:
-            print('it isn`t ajax but valid')
+            print('it isn`t ajax but valid ' + form.cleaned_data['option'])
             if form.cleaned_data['option'] == 'day':
                 context = {'form': self.form_class,
                            'dates': self.get_dates(),
                            'fixtures': fdo.filter(
                                uploaded_date__contains=form.cleaned_data['uploaded_date_from'].date())}
+                return render(self.request, 'jalabel_app/dashboard.html', context)
+            elif form.cleaned_data['option'] == 'lot number':
+                print(form.cleaned_data['lot_number'])
+                context = {'form': self.form_class,
+                           'dates': self.get_dates(),
+                           'fixtures': fdo.filter(
+                               lot_number__contains=form.cleaned_data['lot_number'])}
                 return render(self.request, 'jalabel_app/dashboard.html', context)
             else:
                 pass

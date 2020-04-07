@@ -22,7 +22,7 @@ class FixtureDataForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    uploaded_date_from = forms.DateTimeField()
+    uploaded_date_from = forms.DateTimeField(required=False)
     uploaded_date_to = forms.DateTimeField(required=False)
     lot_number = forms.CharField(max_length=20, required=False)
     message = forms.CharField(max_length=20, required=False)

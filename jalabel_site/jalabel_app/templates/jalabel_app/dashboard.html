@@ -193,6 +193,18 @@
             $('#searchForm').submit();
         });
     }
+
+    let search = document.getElementById('search');
+    search.addEventListener('keydown', function(event) {
+        const keyName = event.key;
+        switch(keyName){
+            case 'Enter':
+                $('#id_option').val('lot number');
+                $('#id_lot_number').val(search.value);
+                $('#searchForm').submit();
+                break;
+        }
+    }); 
 </script>
 </body>
 </html>
